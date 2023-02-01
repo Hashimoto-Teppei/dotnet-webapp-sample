@@ -1,0 +1,66 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "テストページ";
+}
+
+<h1>テストページ</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                タイトル
+            </th>
+            <th>
+                リリース日
+            </th>
+            <th>
+                ジャンル
+            </th>
+            <th>
+                価格
+            </th>
+        </tr>
+    </thead>
+    <tbody id="test-tbody">
+
+    </tbody>
+</table>
+
+<script>
+    const tBodyElem = document.getElementById("test-tbody");
+    const fetchTestData = async () => {
+        const fetchOptions = {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json",
+            }
+        };
+        const response = await fetch("/api/Movies/Get", fetchOptions);
+        const result = await response.json();
+
+        for (const item of result) {
+            console.dir(item);
+            let trElem = document.createElement("tr");
+            let tdTitleElem = document.createElement("td");
+            tdTitleElem.textContent = item.title;
+            trElem.appendChild(tdTitleElem);
+            let tdReleaseDateElem = document.createElement("td");
+            tdReleaseDateElem.textContent = item.releaseDate;
+            trElem.appendChild(tdReleaseDateElem);
+            let tdGenreElem = document.createElement("td");
+            tdGenreElem.textContent = item.genre;
+            trElem.appendChild(tdGenreElem);
+            let tdPriceElem = document.createElement("td");
+            tdPriceElem.textContent = item.price;
+            trElem.appendChild(tdPriceElem);
+
+            tBodyElem.appendChild(trElem);
+        }
+    }
+    fetchTestData();
+</script>

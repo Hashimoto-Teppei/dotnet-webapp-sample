@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebAppSample.Data;
 using WebAppSample.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAppSample.Controllers
 {
 
+    [Authorize]
     public class MoviesController : Controller
     {
         private readonly MovieDbContext _context;
@@ -28,6 +30,7 @@ namespace WebAppSample.Controllers
                           Problem("Entity set 'MovieDbContext.Movie'  is null.");
         }
 
+        // テスト用 Web API
         [HttpGet]
         [Route("api/[controller]/[action]")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Movie))]
@@ -36,6 +39,12 @@ namespace WebAppSample.Controllers
         {
             var movies = await _context.Movie.ToListAsync();
             return movies == null ? NotFound() : Ok(movies);
+        }
+
+        // テスト用ページ
+        public IActionResult Test()
+        {
+            return View();
         }
 
         // GET: Movies/Details/5
