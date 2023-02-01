@@ -10,6 +10,7 @@ using WebAppSample.Models;
 
 namespace WebAppSample.Controllers
 {
+
     public class MoviesController : Controller
     {
         private readonly MovieDbContext _context;
@@ -25,6 +26,16 @@ namespace WebAppSample.Controllers
               return _context.Movie != null ? 
                           View(await _context.Movie.ToListAsync()) :
                           Problem("Entity set 'MovieDbContext.Movie'  is null.");
+        }
+
+        [HttpGet]
+        [Route("api/[controller]/[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Movie))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Get()
+        {
+            var movies = await _context.Movie.ToListAsync();
+            return movies == null ? NotFound() : Ok(movies);
         }
 
         // GET: Movies/Details/5
